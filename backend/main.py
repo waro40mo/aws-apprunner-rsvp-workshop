@@ -56,7 +56,7 @@ class BookingBase(BaseModel):
     Name: str
     Surname: str
     email: str
-    catergory: str = "Summit"
+    category: str = "Summit"  # Fixed spelling
 
 class BookingCreate(BookingBase):
     pass
@@ -70,7 +70,7 @@ class Booking(BookingBase):
 async def create_booking(booking: BookingCreate):
     booking_item = {
         "email": booking.email,
-        "catergory": booking.catergory,
+        "category": booking.category,  # Fixed spelling
         "Name": booking.Name,
         "Surname": booking.Surname
     }
@@ -97,30 +97,30 @@ async def list_bookings():
         raise HTTPException(status_code=500, detail=f"Failed to retrieve bookings: {str(e)}")
 
 # Get booking by email and category
-@app.get("/booking/{email}/{catergory}", response_model=Booking)
-async def get_booking(email: str, catergory: str):
+@app.get("/booking/{email}/{category}", response_model=Booking)  # Fixed spelling
+async def get_booking(email: str, category: str):  # Fixed spelling
     try:
-        response = booking_table.get_item(Key={"email": email, "catergory": catergory})
+        response = booking_table.get_item(Key={"email": email, "category": category})  # Fixed spelling
         booking = response.get('Item')
         if not booking:
-            raise HTTPException(status_code=404, detail=f"Booking with email {email} and category {catergory} not found")
+            raise HTTPException(status_code=404, detail=f"Booking with email {email} and category {category} not found")
         return booking
     except Exception as e:
         logger.error(f"Failed to retrieve booking: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to retrieve booking: {str(e)}")
 
 # Update booking with both keys
-@app.put("/booking/{email}/{catergory}", response_model=Booking)
-async def update_booking(email: str, catergory: str, booking: BookingBase):
+@app.put("/booking/{email}/{category}", response_model=Booking)  # Fixed spelling
+async def update_booking(email: str, category: str, booking: BookingBase):  # Fixed spelling
     try:
         # Check if booking exists
-        response = booking_table.get_item(Key={"email": email, "catergory": catergory})
+        response = booking_table.get_item(Key={"email": email, "category": category})  # Fixed spelling
         if not response.get('Item'):
-            raise HTTPException(status_code=404, detail=f"Booking with email {email} and category {catergory} not found")
+            raise HTTPException(status_code=404, detail=f"Booking with email {email} and category {category} not found")
         
         # Update the booking
         booking_table.update_item(
-            Key={"email": email, "catergory": catergory},
+            Key={"email": email, "category": category},  # Fixed spelling
             UpdateExpression="SET #name = :name, Surname = :surname",
             ExpressionAttributeNames={"#name": "Name"},  # 'Name' is a reserved word in DynamoDB
             ExpressionAttributeValues={
@@ -131,7 +131,7 @@ async def update_booking(email: str, catergory: str, booking: BookingBase):
         )
         
         # Get the updated item
-        updated_booking = booking_table.get_item(Key={"email": email, "catergory": catergory})
+        updated_booking = booking_table.get_item(Key={"email": email, "category": category})  # Fixed spelling
         return updated_booking['Item']
     
     except Exception as e:
@@ -139,16 +139,16 @@ async def update_booking(email: str, catergory: str, booking: BookingBase):
         raise HTTPException(status_code=500, detail=f"Failed to update booking: {str(e)}")
 
 # Delete booking with both keys
-@app.delete("/booking/{email}/{catergory}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_booking(email: str, catergory: str):
+@app.delete("/booking/{email}/{category}", status_code=status.HTTP_204_NO_CONTENT)  # Fixed spelling
+async def delete_booking(email: str, category: str):  # Fixed spelling
     try:
         # Check if booking exists
-        response = booking_table.get_item(Key={"email": email, "catergory": catergory})
+        response = booking_table.get_item(Key={"email": email, "category": category})  # Fixed spelling
         if not response.get('Item'):
-            raise HTTPException(status_code=404, detail=f"Booking with email {email} and category {catergory} not found")
+            raise HTTPException(status_code=404, detail=f"Booking with email {email} and category {category} not found")
         
         # Delete the booking
-        booking_table.delete_item(Key={"email": email, "catergory": catergory})
+        booking_table.delete_item(Key={"email": email, "category": category})  # Fixed spelling
         return None
     except Exception as e:
         logger.error(f"Failed to delete booking: {str(e)}")
@@ -170,16 +170,16 @@ async def get_bookings_by_email(email: str):
         raise HTTPException(status_code=500, detail=f"Failed to retrieve bookings: {str(e)}")
 
 # Get bookings by category
-@app.get("/booking/category/{catergory}", response_model=List[Booking])
-async def get_bookings_by_category(catergory: str):
+@app.get("/booking/category/{category}", response_model=List[Booking])  # Fixed spelling
+async def get_bookings_by_category(category: str):  # Fixed spelling
     try:
         # For Global Secondary Index, we'd use query. But for scan:
         response = booking_table.scan(
-            FilterExpression=Key('catergory').eq(catergory)
+            FilterExpression=Key('category').eq(category)  # Fixed spelling
         )
         bookings = response.get('Items', [])
         if not bookings:
-            raise HTTPException(status_code=404, detail=f"No bookings found for category {catergory}")
+            raise HTTPException(status_code=404, detail=f"No bookings found for category {category}")
         return bookings
     except Exception as e:
         logger.error(f"Failed to retrieve bookings by category: {str(e)}")
