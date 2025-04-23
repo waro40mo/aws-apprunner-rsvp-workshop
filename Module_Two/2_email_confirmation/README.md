@@ -45,7 +45,7 @@ aws lambda create-function \
   --handler email_handler.lambda_handler \
   --zip-file fileb://email_handler.zip \
   --role arn:aws:iam::YOUR_ACCOUNT_ID:role/lambda-ses-role \
-  --environment "Variables={SENDER_EMAIL=noreply@yourdomain.com,AWS_REGION=eu-west-2}"
+  --environment "Variables={SENDER_EMAIL=noreply@yourdomain.com,AWS_REGION=eu-west-1}"
 ```
 
 ### 3. Configure IAM Permissions

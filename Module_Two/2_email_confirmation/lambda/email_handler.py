@@ -8,7 +8,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # Initialize SES client
-ses_client = boto3.client('ses', region_name=os.environ.get('AWS_REGION', 'eu-west-2'))
+ses_client = boto3.client('ses', region_name=os.environ.get('AWS_REGION', 'eu-west-1'))
 
 # Email configuration
 SENDER = os.environ.get('SENDER_EMAIL', 'noreply@example.co.za')

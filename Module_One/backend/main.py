@@ -25,7 +25,7 @@ app.add_middleware(
 )
 
 # DynamoDB Configuration
-region = 'eu-west-2'  # London region
+region = 'eu-west-1'  # Ireland region
 table_name = 'booking'
 
 # More explicit AWS configuration for App Runner environment
